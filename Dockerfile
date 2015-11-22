@@ -1,9 +1,10 @@
 FROM node:0.12.7-wheezy
 
+
 MAINTAINER Patrick Wolleb
 
 
-
+LABEL Version=1.2.0
 ENV PYTHON_VERSION 2.7.10
 ENV PYTHON_PIP_VERSION 7.1.2
 ENV PHANTOMJS_VERSION 1.9.7
@@ -12,9 +13,9 @@ ENV PHANTOMJS_VERSION 1.9.7
 
 
 
-###########################################################################
-### INSTALL Python ## https://github.com/docker-library/python/blob/15798abb6cfb145344462a345db4b572227fb859/2.7/Dockerfile
-###########################################################################
+##########################################################################################################################
+### Python ## https://github.com/docker-library/python/blob/15798abb6cfb145344462a345db4b572227fb859/2.7/Dockerfile ######
+##########################################################################################################################
 
 # remove several traces of debian python
 RUN apt-get purge -y python.*
@@ -46,19 +47,14 @@ RUN set -x \
     -exec rm -rf '{}' + \
   && rm -rf /usr/src/python
 
-###########################################################################
-### END INSTALL Python ####################################################
-###########################################################################
-
 
 
 
 
 ###########################################################################
-### INSTALL PhantomJS ## https://hub.docker.com/r/cmfatih/phantomjs/~/dockerfile/
+### PhantomJS ## https://hub.docker.com/r/cmfatih/phantomjs/~/dockerfile/
 ###########################################################################
 
-# Commands
 RUN \
   apt-get update && \
   apt-get upgrade -y && \
@@ -75,27 +71,27 @@ RUN \
   apt-get clean all
 ENV PHANTOMJS_BIN=/usr/bin/phantomjs
 
+
+
+
+
+
 ###########################################################################
-### END INSTALL PhantomJS #################################################
+### Node Tools ############################################################
 ###########################################################################
 
-
-
-
-
-
-# Install node tools
 RUN npm install -g grunt-cli && \
     npm install -g bower
+    export PHANTOMJS_BIN=which phantomjs
 
-# phantomjs
-# ENV PHANTOM_VERSION=1.9.7
-# RUN wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-$PHANTOM_VERSION-linux-x86_64.tar.bz2 && \
-#     tar xfj phantomjs-$PHANTOM_VERSION-linux-x86_64.tar.bz2 && \
-#     cp phantomjs-$PHANTOM_VERSION-linux-x86_64/bin/phantomjs /usr/local/bin && \
-#     export PHANTOMJS_BIN=which phantomjs
 
-# AWS EBS CLI
+
+
+
+###########################################################################
+### INSTALL AWS EB CLI ####################################################
+###########################################################################
+
 RUN pip install awsebcli
 
 
